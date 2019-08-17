@@ -6,8 +6,6 @@ import (
 	cli "github.com/jawher/mow.cli"
 )
 
-//const token string = "NjExOTEwOTM3NDUxOTU0MTk2.XVas4g.mOOx7hUvwivq510BYfGIeKVw6xo"
-
 func Init(app *cli.Cli) {
 	// Start cli command
 	app.Command("start", "start bot session", StartSession)

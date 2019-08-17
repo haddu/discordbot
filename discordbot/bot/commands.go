@@ -17,13 +17,14 @@ func StartSession(cmd *cli.Cmd) {
 	var (
 		token  = cmd.StringOpt("t token", "", "authority token")
 		rooms = cmd.IntOpt("r rooms", 20,  "rooms capacity")
+		level = cmd.StringOpt("L loglevel", "error", "loggin level")
 
 		client *client
 		err    error
 	)
 
 	cmd.Before = func() {
-		if client, err = New(*token, *rooms); err != nil {
+		if client, err = New(*token, *level, *rooms); err != nil {
 			log.Fatalf("client failed: %v", err)
 		}
 	}

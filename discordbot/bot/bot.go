@@ -8,9 +8,16 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-const(
+const (
 	delimiterIndent = "---------------------------------"
 )
+
+var logLevelsMap = map[string]int{
+	"error": discordgo.LogError,
+	"warn":  discordgo.LogWarning,
+	"info":  discordgo.LogInformational,
+	"debug": discordgo.LogDebug,
+}
 
 // Stores ids of all temporary created rooms
 type createdVoiseChannel struct {
@@ -22,19 +29,21 @@ func (ch *createdVoiseChannel) String() string {
 }
 
 type client struct {
-	session *discordgo.Session
+	logLevel int
+	session  *discordgo.Session
 	channels []createdVoiseChannel
 }
 
-func New(token string, rooms int) (*client, error) {
+func New(token, level string, rooms int) (*client, error) {
 	// Create new Discord session using the provided discordbot token.
 	s, err := discordgo.New("Bot " + token)
 	if err != nil {
 		return nil, fmt.Errorf("creating Discord session error: %v", err)
 	}
+	s.LogLevel = logLevelsMap[level]
 
 	return &client{
-		session: s,
+		session:  s,
 		channels: make([]createdVoiseChannel, 0, rooms),
 	}, nil
 }
